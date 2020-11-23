@@ -25,7 +25,7 @@ func main() {
 	fmt.Println("Example IT Glue Application")
 	itg := itglue.NewITGAPI("ITG.XXXXXXXXXXXXXXXXXXXXXXXX.XXXXXXXXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXXXX")
 
-	nd, err := itg.GetOrganizationByName("Next Digital Inc.") //Returns an organization list
+	nd, err := itg.GetOrganizationByName("Next Digital Inc.", 1) //Returns page one of an organization list
 	if err != nil {
 		log.Fatalf("could not get nd: %s", err)
 	}

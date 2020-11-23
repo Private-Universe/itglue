@@ -76,7 +76,7 @@ func (itg *ITGAPI) GetFlexibleAssetsJSONByName(flexibleAssetTypeID int, flexible
 
 //GetFlexibleAssetsJSONByOrganizationID is a special function.  All flexible assets will return different data depending
 //on which fields make up the flexible asset.  Because of this, this function simply returns the JSON bytes.
-func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationID(flexibleAssetTypeID int, OrganizationID string, pageNumber int) ([]byte, error) {
+func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationID(flexibleAssetTypeID int, OrganizationID int, pageNumber int) ([]byte, error) {
 	req := itg.NewRequest("/flexible_assets", "GET", nil)
 	req.Page = pageNumber
 	req.RawURLValues = fmt.Sprintf("filter[flexible_asset_type_id]=%d&filter[organization_id]=%d", flexibleAssetTypeID, OrganizationID)
@@ -91,7 +91,7 @@ func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationID(flexibleAssetTypeID int
 
 //GetFlexibleAssetsJSONByOrganizationIDAndName is a special function.  All flexible assets will return different data depending
 //on which fields make up the flexible asset.  Because of this, this function simply returns the JSON bytes.
-func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationIDAndName(flexibleAssetTypeID int, OrganizationID string, flexibleAssetName string, pageNumber int) ([]byte, error) {
+func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationIDAndName(flexibleAssetTypeID int, OrganizationID int, flexibleAssetName string, pageNumber int) ([]byte, error) {
 	req := itg.NewRequest("/flexible_assets", "GET", nil)
 	req.Page = pageNumber
 	req.RawURLValues = fmt.Sprintf("filter[flexible_asset_type_id]=%d&filter[organization_id]=%d&filter[name]=%s", flexibleAssetTypeID, OrganizationID, flexibleAssetName)

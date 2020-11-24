@@ -110,3 +110,39 @@ func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationIDAndName(flexibleAssetTyp
 
 	return req.Body, nil
 }
+
+//PostFlexibleAsset create new asset
+func (itg *ITGAPI) PostFlexibleAsset(asset []byte) ([]byte, error) {
+	req := itg.NewRequest("/flexible_assets", "POST", asset)
+
+	err := req.Do()
+	if err != nil {
+		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
+	}
+
+	return req.Body, nil
+}
+
+//PatchFlexibleAsset update asset. Any trait not specified will be deleted
+func (itg *ITGAPI) PatchFlexibleAsset(flexibleAssetID int, asset []byte) ([]byte, error) {
+	req := itg.NewRequest(fmt.Sprintf("/flexible_assets/%d", flexibleAssetID), "PATCH", asset)
+
+	err := req.Do()
+	if err != nil {
+		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
+	}
+
+	return req.Body, nil
+}
+
+//DeleteFlexibleAsset delete asset
+func (itg *ITGAPI) DeleteFlexibleAsset(flexibleAssetID int) ([]byte, error) {
+	req := itg.NewRequest(fmt.Sprintf("/flexible_assets/%d", flexibleAssetID), "DELETE", nil)
+
+	err := req.Do()
+	if err != nil {
+		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
+	}
+
+	return req.Body, nil
+}

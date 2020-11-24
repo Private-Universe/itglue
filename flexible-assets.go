@@ -9,12 +9,19 @@ type FlexibleAssetData struct {
 	ID         string `json:"id"`
 	Type       string `json:"type"`
 	Attributes struct {
-		Name        string    `json:"name"`
-		Description string    `json:"description"`
-		CreatedAt   time.Time `json:"created-at"`
-		UpdatedAt   time.Time `json:"updated-at"`
-		Icon        string    `json:"icon"`
-		Enabled     bool      `json:"enabled"`
+		OrganizationID        int    `json:"organization-id"`
+		OrganizationName      string `json:"organization-name"`
+		ResourceURL           string `json:"resource-url"`
+		Restricted            bool   `json:"restricted"`
+		MyGlue                bool   `json:"my-glue"`
+		FlexibleAssetTypeID   int    `json:"flexible-asset-type-id"`
+		FlexibleAssetTypeName string `json:"flexible-asset-type-name"`
+		Name                  string `json:"name"`
+		Traits                struct {
+		} `json:"traits"`
+		Archived  bool      `json:"archived"`
+		CreatedAt time.Time `json:"created-at"`
+		UpdatedAt time.Time `json:"updated-at"`
 	} `json:"attributes"`
 	Relationships struct {
 	} `json:"relationships"`

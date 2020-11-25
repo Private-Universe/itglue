@@ -155,10 +155,14 @@ func (itg *ITGAPI) GetFlexibleAssetsByOrganizationIDAndName(flexibleAssetTypeID 
 
 //PostFlexibleAsset create new asset
 func (itg *ITGAPI) PostFlexibleAsset(asset *FlexibleAsset) (*FlexibleAsset, error) {
-	a := []byte(fmt.Sprintf("%v", asset))
+	a, err := json.Marshal(asset)
+	if err != nil {
+		return nil, fmt.Errorf("could not decode asset: %s", err)
+	}
+
 	req := itg.NewRequest("/flexible_assets", "POST", a)
 
-	err := req.Do()
+	err = req.Do()
 	if err != nil {
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
@@ -174,10 +178,14 @@ func (itg *ITGAPI) PostFlexibleAsset(asset *FlexibleAsset) (*FlexibleAsset, erro
 
 //PatchFlexibleAsset update asset. Any trait not specified will be deleted
 func (itg *ITGAPI) PatchFlexibleAsset(flexibleAssetID int, asset *FlexibleAsset) (*FlexibleAsset, error) {
-	a := []byte(fmt.Sprintf("%v", asset))
+	a, err := json.Marshal(asset)
+	if err != nil {
+		return nil, fmt.Errorf("could not decode asset: %s", err)
+	}
+
 	req := itg.NewRequest(fmt.Sprintf("/flexible_assets/%d", flexibleAssetID), "PATCH", a)
 
-	err := req.Do()
+	err = req.Do()
 	if err != nil {
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}

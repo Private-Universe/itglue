@@ -7,81 +7,264 @@ import (
 	"testing"
 )
 
-func TestGetFlexibleAssetsJSON(t *testing.T) {
+func TestGetFlexibleAssets(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
+		fmt.Fprintln(rw, `{
+			"data": [
+				{
+					"id": "1",
+					"type": "flexible-assets",
+					"attributes": {
+						"organization-id": 1,
+						"organization-name": "Organization",
+						"resource-url": "https://example.com",
+						"restricted": false,
+						"my-glue": false,
+						"flexible-asset-type-id": 1,
+						"flexible-asset-type-name": "Example 1",
+						"name": "test",
+						"traits": {
+							"trait-1": "test",
+							"trait-2": "https://example.com",
+							"trait-3": "test 2",
+							"trait-4": 1,
+							"trait-5": {
+								"type": "FlexibleAssetTypes",
+								"values": [
+									{
+										"resource-url": "https://example.com",
+										"id": 1,
+										"name": "Example 2"
+									}
+								]
+							}
+						},
+						"archived": false,
+						"created-at": "2020-11-24T03:40:20.000Z",
+						"updated-at": "2020-11-24T03:40:21.000Z"
+					},
+					"relationships": {}
+				}
+			]
+		}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()
 	glueURL := server.URL
 	ITGAPI := &ITGAPI{Site: glueURL, APIKey: "apiKey"}
-	_, err := ITGAPI.GetFlexibleAssetsJSON(1, 1)
+	_, err := ITGAPI.GetFlexibleAssets(1, 1)
 	if err != nil {
 		t.Errorf("%s", err)
 	}
 }
 
-func TestGetFlexibleAssetsJSONByID(t *testing.T) {
+func TestGetFlexibleAssetsByID(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
+		fmt.Fprintln(rw, `{
+			"data": {
+				"id": "1",
+				"type": "flexible-assets",
+				"attributes": {
+					"organization-id": 1,
+					"organization-name": "Organization",
+					"resource-url": "https://example.com",
+					"restricted": false,
+					"my-glue": false,
+					"flexible-asset-type-id": 1,
+					"flexible-asset-type-name": "Example 1",
+					"name": "test",
+					"traits": {
+						"trait-1": "test",
+						"trait-2": "https://example.com",
+						"trait-3": "test 2",
+						"trait-4": 1,
+						"trait-5": {
+							"type": "FlexibleAssetTypes",
+							"values": [
+								{
+									"resource-url": "https://example.com",
+									"id": 1,
+									"name": "Example 2"
+								}
+							]
+						}
+					},
+					"archived": false,
+					"created-at": "2020-11-24T03:40:20.000Z",
+					"updated-at": "2020-11-24T03:40:21.000Z"
+				},
+				"relationships": {}
+			}
+		}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()
 	glueURL := server.URL
 	ITGAPI := &ITGAPI{Site: glueURL, APIKey: "apiKey"}
-	_, err := ITGAPI.GetFlexibleAssetsJSONByID(1)
+	_, err := ITGAPI.GetFlexibleAssetsByID(1)
 	if err != nil {
 		t.Errorf("%s", err)
 	}
 }
 
-func TestGetFlexibleAssetsJSONByName(t *testing.T) {
+func TestGetFlexibleAssetsByName(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
+		fmt.Fprintln(rw, `{
+			"data": [
+				{
+					"id": "1",
+					"type": "flexible-assets",
+					"attributes": {
+						"organization-id": 1,
+						"organization-name": "Organization",
+						"resource-url": "https://example.com",
+						"restricted": false,
+						"my-glue": false,
+						"flexible-asset-type-id": 1,
+						"flexible-asset-type-name": "Example 1",
+						"name": "test",
+						"traits": {
+							"trait-1": "test",
+							"trait-2": "https://example.com",
+							"trait-3": "test 2",
+							"trait-4": 1,
+							"trait-5": {
+								"type": "FlexibleAssetTypes",
+								"values": [
+									{
+										"resource-url": "https://example.com",
+										"id": 1,
+										"name": "Example 2"
+									}
+								]
+							}
+						},
+						"archived": false,
+						"created-at": "2020-11-24T03:40:20.000Z",
+						"updated-at": "2020-11-24T03:40:21.000Z"
+					},
+					"relationships": {}
+				}
+			]
+		}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()
 	glueURL := server.URL
 	ITGAPI := &ITGAPI{Site: glueURL, APIKey: "apiKey"}
-	_, err := ITGAPI.GetFlexibleAssetsJSONByName(1, "name", 1)
+	_, err := ITGAPI.GetFlexibleAssetsByName(1, "name", 1)
 	if err != nil {
 		t.Errorf("%s", err)
 	}
 }
 
-func TestGetFlexibleAssetsJSONByOrganizationID(t *testing.T) {
+func TestGetFlexibleAssetsByOrganizationID(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
+		fmt.Fprintln(rw, `{
+			"data": [
+				{
+					"id": "1",
+					"type": "flexible-assets",
+					"attributes": {
+						"organization-id": 1,
+						"organization-name": "Organization",
+						"resource-url": "https://example.com",
+						"restricted": false,
+						"my-glue": false,
+						"flexible-asset-type-id": 1,
+						"flexible-asset-type-name": "Example 1",
+						"name": "test",
+						"traits": {
+							"trait-1": "test",
+							"trait-2": "https://example.com",
+							"trait-3": "test 2",
+							"trait-4": 1,
+							"trait-5": {
+								"type": "FlexibleAssetTypes",
+								"values": [
+									{
+										"resource-url": "https://example.com",
+										"id": 1,
+										"name": "Example 2"
+									}
+								]
+							}
+						},
+						"archived": false,
+						"created-at": "2020-11-24T03:40:20.000Z",
+						"updated-at": "2020-11-24T03:40:21.000Z"
+					},
+					"relationships": {}
+				}
+			]
+		}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()
 	glueURL := server.URL
 	ITGAPI := &ITGAPI{Site: glueURL, APIKey: "apiKey"}
-	_, err := ITGAPI.GetFlexibleAssetsJSONByOrganizationID(1, 1, 1)
+	_, err := ITGAPI.GetFlexibleAssetsByOrganizationID(1, 1, 1)
 	if err != nil {
 		t.Errorf("%s", err)
 	}
 }
 
-func TestGetFlexibleAssetsJSONByOrganizationIDAndName(t *testing.T) {
+func TestGetFlexibleAssetsByOrganizationIDAndName(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
+		fmt.Fprintln(rw, `{
+			"data": [
+				{
+					"id": "1",
+					"type": "flexible-assets",
+					"attributes": {
+						"organization-id": 1,
+						"organization-name": "Organization",
+						"resource-url": "https://example.com",
+						"restricted": false,
+						"my-glue": false,
+						"flexible-asset-type-id": 1,
+						"flexible-asset-type-name": "Example 1",
+						"name": "test",
+						"traits": {
+							"trait-1": "test",
+							"trait-2": "https://example.com",
+							"trait-3": "test 2",
+							"trait-4": 1,
+							"trait-5": {
+								"type": "FlexibleAssetTypes",
+								"values": [
+									{
+										"resource-url": "https://example.com",
+										"id": 1,
+										"name": "Example 2"
+									}
+								]
+							}
+						},
+						"archived": false,
+						"created-at": "2020-11-24T03:40:20.000Z",
+						"updated-at": "2020-11-24T03:40:21.000Z"
+					},
+					"relationships": {}
+				}
+			]
+		}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()
 	glueURL := server.URL
 	ITGAPI := &ITGAPI{Site: glueURL, APIKey: "apiKey"}
-	_, err := ITGAPI.GetFlexibleAssetsJSONByOrganizationIDAndName(1, 1, "name", 1)
+	_, err := ITGAPI.GetFlexibleAssetsByOrganizationIDAndName(1, 1, "name", 1)
 	if err != nil {
 		t.Errorf("%s", err)
 	}
@@ -91,14 +274,55 @@ func TestPostFlexibleAsset(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
+		fmt.Fprintln(rw, `{
+			"data": {
+				"id": "1",
+				"type": "flexible-assets",
+				"attributes": {
+					"organization-id": 1,
+					"organization-name": "Organization",
+					"resource-url": "https://example.com",
+					"restricted": false,
+					"my-glue": false,
+					"flexible-asset-type-id": 1,
+					"flexible-asset-type-name": "Example 1",
+					"name": "test",
+					"traits": {
+						"trait-1": "test",
+						"trait-2": "https://example.com",
+						"trait-3": "test 2",
+						"trait-4": 1,
+						"trait-5": {
+							"type": "FlexibleAssetTypes",
+							"values": [
+								{
+									"resource-url": "https://example.com",
+									"id": 1,
+									"name": "Example 2"
+								}
+							]
+						}
+					},
+					"archived": false,
+					"created-at": "2020-11-24T03:40:20.000Z",
+					"updated-at": "2020-11-24T03:40:21.000Z"
+				},
+				"relationships": {}
+			}
+		}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()
 	glueURL := server.URL
 	ITGAPI := &ITGAPI{Site: glueURL, APIKey: "apiKey"}
-	data := make([]byte, 5)
-	_, err := ITGAPI.PostFlexibleAsset(data)
+	a := &FlexibleAsset{}
+	a.Data.Attributes.OrganizationID = 1
+	a.Data.Attributes.FlexibleAssetTypeID = 1
+	a.Data.Attributes.Traits = map[string]interface{}{
+		"test":  "test",
+		"test2": "test2",
+	}
+	_, err := ITGAPI.PostFlexibleAsset(a)
 	if err != nil {
 		t.Errorf("%s", err)
 	}
@@ -108,14 +332,55 @@ func TestPatchFlexibleAsset(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
+		fmt.Fprintln(rw, `{
+			"data": {
+				"id": "1",
+				"type": "flexible-assets",
+				"attributes": {
+					"organization-id": 1,
+					"organization-name": "Organization",
+					"resource-url": "https://example.com",
+					"restricted": false,
+					"my-glue": false,
+					"flexible-asset-type-id": 1,
+					"flexible-asset-type-name": "Example 1",
+					"name": "test",
+					"traits": {
+						"trait-1": "test",
+						"trait-2": "https://example.com",
+						"trait-3": "test 2",
+						"trait-4": 1,
+						"trait-5": {
+							"type": "FlexibleAssetTypes",
+							"values": [
+								{
+									"resource-url": "https://example.com",
+									"id": 1,
+									"name": "Example 2"
+								}
+							]
+						}
+					},
+					"archived": false,
+					"created-at": "2020-11-24T03:40:20.000Z",
+					"updated-at": "2020-11-24T03:40:21.000Z"
+				},
+				"relationships": {}
+			}
+		}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()
 	glueURL := server.URL
 	ITGAPI := &ITGAPI{Site: glueURL, APIKey: "apiKey"}
-	data := make([]byte, 5)
-	_, err := ITGAPI.PatchFlexibleAsset(1, data)
+	a := &FlexibleAsset{}
+	a.Data.Attributes.OrganizationID = 1
+	a.Data.Attributes.FlexibleAssetTypeID = 1
+	a.Data.Attributes.Traits = map[string]interface{}{
+		"test":  "test",
+		"test2": "test2",
+	}
+	_, err := ITGAPI.PatchFlexibleAsset(1, a)
 	if err != nil {
 		t.Errorf("%s", err)
 	}
@@ -125,7 +390,6 @@ func TestDeleteFlexibleAsset(t *testing.T) {
 	// Start a local HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(rw, `{"fake IT Glue json string"}`)
 	}))
 	// Close the server when test finishes
 	defer server.Close()

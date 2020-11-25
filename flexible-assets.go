@@ -1,6 +1,7 @@
 package itglue
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -17,7 +18,7 @@ type FlexibleAssetData struct {
 		FlexibleAssetTypeID   int    `json:"flexible-asset-type-id"`
 		FlexibleAssetTypeName string `json:"flexible-asset-type-name"`
 		Name                  string `json:"name"`
-		Traits                struct {
+		Traits                map[string]interface {
 		} `json:"traits"`
 		Archived  bool      `json:"archived"`
 		CreatedAt time.Time `json:"created-at"`
@@ -39,9 +40,8 @@ type FlexibleAssetList struct {
 	Links struct{ Links }               `json:"links"`
 }
 
-//GetFlexibleAssetsJSON is a special function.  All flexible assets will return different data depending
-//on which fields make up the flexible asset.  Because of this, this function simply returns the JSON bytes.
-func (itg *ITGAPI) GetFlexibleAssetsJSON(flexibleAssetTypeID int, pageNumber int) ([]byte, error) {
+//GetFlexibleAssets returns flexible assets
+func (itg *ITGAPI) GetFlexibleAssets(flexibleAssetTypeID int, pageNumber int) (*FlexibleAssetList, error) {
 	req := itg.NewRequest("/flexible_assets", "GET", nil)
 	req.Page = pageNumber
 	req.RawURLValues = fmt.Sprintf("filter[flexible_asset_type_id]=%d", flexibleAssetTypeID)
@@ -51,24 +51,38 @@ func (itg *ITGAPI) GetFlexibleAssetsJSON(flexibleAssetTypeID int, pageNumber int
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
 
-	return req.Body, nil
+	flexibleAsset := &FlexibleAssetList{}
+	err = json.Unmarshal(req.Body, flexibleAsset)
+	if err != nil {
+		return nil, fmt.Errorf("could not get flexibleAsset: %s", err)
+	}
+
+	if len((*flexibleAsset).Data) == 0 {
+		return nil, fmt.Errorf("ITG returned no results for type %d", flexibleAssetTypeID)
+	}
+
+	return flexibleAsset, nil
 }
 
-//GetFlexibleAssetsJSONByID is a special function.  All flexible assets will return different data depending
-//on which fields make up the flexible asset.  Because of this, this function simply returns the JSON bytes.
-func (itg *ITGAPI) GetFlexibleAssetsJSONByID(flexibleAssetID int) ([]byte, error) {
+//GetFlexibleAssetsByID returns flexible assets
+func (itg *ITGAPI) GetFlexibleAssetsByID(flexibleAssetID int) (*FlexibleAsset, error) {
 	req := itg.NewRequest(fmt.Sprintf("/flexible_assets/%d", flexibleAssetID), "GET", nil)
 	err := req.Do()
 	if err != nil {
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
 
-	return req.Body, nil
+	flexibleAsset := &FlexibleAsset{}
+	err = json.Unmarshal(req.Body, flexibleAsset)
+	if err != nil {
+		return nil, fmt.Errorf("could not get flexibleAsset: %s", err)
+	}
+
+	return flexibleAsset, nil
 }
 
-//GetFlexibleAssetsJSONByName is a special function.  All flexible assets will return different data depending
-//on which fields make up the flexible asset.  Because of this, this function simply returns the JSON bytes.
-func (itg *ITGAPI) GetFlexibleAssetsJSONByName(flexibleAssetTypeID int, flexibleAssetName string, pageNumber int) ([]byte, error) {
+//GetFlexibleAssetsByName returns flexible assets
+func (itg *ITGAPI) GetFlexibleAssetsByName(flexibleAssetTypeID int, flexibleAssetName string, pageNumber int) (*FlexibleAssetList, error) {
 	req := itg.NewRequest("/flexible_assets", "GET", nil)
 	req.Page = pageNumber
 	req.RawURLValues = fmt.Sprintf("filter[flexible_asset_type_id]=%d&filter[name]=%s", flexibleAssetTypeID, flexibleAssetName)
@@ -78,12 +92,21 @@ func (itg *ITGAPI) GetFlexibleAssetsJSONByName(flexibleAssetTypeID int, flexible
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
 
-	return req.Body, nil
+	flexibleAsset := &FlexibleAssetList{}
+	err = json.Unmarshal(req.Body, flexibleAsset)
+	if err != nil {
+		return nil, fmt.Errorf("could not get flexibleAsset: %s", err)
+	}
+
+	if len((*flexibleAsset).Data) == 0 {
+		return nil, fmt.Errorf("ITG returned no results for type %d", flexibleAssetTypeID)
+	}
+
+	return flexibleAsset, nil
 }
 
-//GetFlexibleAssetsJSONByOrganizationID is a special function.  All flexible assets will return different data depending
-//on which fields make up the flexible asset.  Because of this, this function simply returns the JSON bytes.
-func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationID(flexibleAssetTypeID int, OrganizationID int, pageNumber int) ([]byte, error) {
+//GetFlexibleAssetsByOrganizationID returns flexible assets
+func (itg *ITGAPI) GetFlexibleAssetsByOrganizationID(flexibleAssetTypeID int, OrganizationID int, pageNumber int) (*FlexibleAssetList, error) {
 	req := itg.NewRequest("/flexible_assets", "GET", nil)
 	req.Page = pageNumber
 	req.RawURLValues = fmt.Sprintf("filter[flexible_asset_type_id]=%d&filter[organization_id]=%d", flexibleAssetTypeID, OrganizationID)
@@ -93,12 +116,21 @@ func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationID(flexibleAssetTypeID int
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
 
-	return req.Body, nil
+	flexibleAsset := &FlexibleAssetList{}
+	err = json.Unmarshal(req.Body, flexibleAsset)
+	if err != nil {
+		return nil, fmt.Errorf("could not get flexibleAsset: %s", err)
+	}
+
+	if len((*flexibleAsset).Data) == 0 {
+		return nil, fmt.Errorf("ITG returned no results for type %d", flexibleAssetTypeID)
+	}
+
+	return flexibleAsset, nil
 }
 
-//GetFlexibleAssetsJSONByOrganizationIDAndName is a special function.  All flexible assets will return different data depending
-//on which fields make up the flexible asset.  Because of this, this function simply returns the JSON bytes.
-func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationIDAndName(flexibleAssetTypeID int, OrganizationID int, flexibleAssetName string, pageNumber int) ([]byte, error) {
+//GetFlexibleAssetsByOrganizationIDAndName returns flexible assets
+func (itg *ITGAPI) GetFlexibleAssetsByOrganizationIDAndName(flexibleAssetTypeID int, OrganizationID int, flexibleAssetName string, pageNumber int) (*FlexibleAssetList, error) {
 	req := itg.NewRequest("/flexible_assets", "GET", nil)
 	req.Page = pageNumber
 	req.RawURLValues = fmt.Sprintf("filter[flexible_asset_type_id]=%d&filter[organization_id]=%d&filter[name]=%s", flexibleAssetTypeID, OrganizationID, flexibleAssetName)
@@ -108,31 +140,55 @@ func (itg *ITGAPI) GetFlexibleAssetsJSONByOrganizationIDAndName(flexibleAssetTyp
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
 
-	return req.Body, nil
+	flexibleAsset := &FlexibleAssetList{}
+	err = json.Unmarshal(req.Body, flexibleAsset)
+	if err != nil {
+		return nil, fmt.Errorf("could not get flexibleAsset: %s", err)
+	}
+
+	if len((*flexibleAsset).Data) == 0 {
+		return nil, fmt.Errorf("ITG returned no results for ID %s", flexibleAssetName)
+	}
+
+	return flexibleAsset, nil
 }
 
 //PostFlexibleAsset create new asset
-func (itg *ITGAPI) PostFlexibleAsset(asset []byte) ([]byte, error) {
-	req := itg.NewRequest("/flexible_assets", "POST", asset)
+func (itg *ITGAPI) PostFlexibleAsset(asset *FlexibleAsset) (*FlexibleAsset, error) {
+	a := []byte(fmt.Sprintf("%v", asset))
+	req := itg.NewRequest("/flexible_assets", "POST", a)
 
 	err := req.Do()
 	if err != nil {
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
 
-	return req.Body, nil
+	flexibleAsset := &FlexibleAsset{}
+	err = json.Unmarshal(req.Body, flexibleAsset)
+	if err != nil {
+		return nil, fmt.Errorf("could not get flexibleAsset: %s", err)
+	}
+
+	return flexibleAsset, nil
 }
 
 //PatchFlexibleAsset update asset. Any trait not specified will be deleted
-func (itg *ITGAPI) PatchFlexibleAsset(flexibleAssetID int, asset []byte) ([]byte, error) {
-	req := itg.NewRequest(fmt.Sprintf("/flexible_assets/%d", flexibleAssetID), "PATCH", asset)
+func (itg *ITGAPI) PatchFlexibleAsset(flexibleAssetID int, asset *FlexibleAsset) (*FlexibleAsset, error) {
+	a := []byte(fmt.Sprintf("%v", asset))
+	req := itg.NewRequest(fmt.Sprintf("/flexible_assets/%d", flexibleAssetID), "PATCH", a)
 
 	err := req.Do()
 	if err != nil {
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)
 	}
 
-	return req.Body, nil
+	flexibleAsset := &FlexibleAsset{}
+	err = json.Unmarshal(req.Body, flexibleAsset)
+	if err != nil {
+		return nil, fmt.Errorf("could not get flexibleAsset: %s", err)
+	}
+
+	return flexibleAsset, nil
 }
 
 //DeleteFlexibleAsset delete asset

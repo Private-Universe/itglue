@@ -93,7 +93,7 @@ func (req *Request) Do() error {
 }
 
 func getHTTPResponseBody(resp *http.Response) ([]byte, error) {
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		return nil, fmt.Errorf("ITG returned HTTP status code %s\n%s", resp.Status, resp.Body)
 	}
 

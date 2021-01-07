@@ -6,52 +6,53 @@ import (
 	"time"
 )
 
+// PasswordData struct, pointers to have omitempty work for time.Time
 type PasswordData struct {
-	ID         string `json:"id"`
-	Type       string `json:"type"`
+	ID         string `json:"id,omitempty"`
+	Type       string `json:"type,omitempty"`
 	Attributes struct {
-		OrganizationID         int         `json:"organization-id"`
-		OrganizationName       string      `json:"organization-name"`
-		ResourceURL            string      `json:"resource-url"`
-		Restricted             bool        `json:"restricted"`
-		MyGlue                 bool        `json:"my-glue"`
-		Name                   string      `json:"name"`
-		AutofillSelectors      interface{} `json:"autofill-selectors"`
-		Username               string      `json:"username"`
-		URL                    string      `json:"url"`
-		Notes                  string      `json:"notes"`
-		PasswordUpdatedAt      time.Time   `json:"password-updated-at"`
-		UpdatedBy              int         `json:"updated-by"`
-		UpdatedByType          string      `json:"updated-by-type"`
-		ResourceID             int         `json:"resource-id"`
-		CachedResourceTypeName string      `json:"cached-resource-type-name"`
-		CachedResourceName     string      `json:"cached-resource-name"`
-		PasswordCategoryID     int         `json:"password-category-id"`
-		PasswordCategoryName   string      `json:"password-category-name"`
-		CreatedAt              time.Time   `json:"created-at"`
-		UpdatedAt              time.Time   `json:"updated-at"`
-		OtpEnabled             bool        `json:"otp-enabled"`
-		PasswordFolderID       int         `json:"password-folder-id"`
-		ResourceType           string      `json:"resource-type"`
-		ParentURL              string      `json:"parent-url"`
-		VaultID                int         `json:"vault-id"`
-		Archived               bool        `json:"archived"`
-		Password               string      `json:"password"`
-	} `json:"attributes"`
+		OrganizationID         int         `json:"organization-id,omitempty"`
+		OrganizationName       string      `json:"organization-name,omitempty"`
+		ResourceURL            string      `json:"resource-url,omitempty"`
+		Restricted             bool        `json:"restricted,omitempty"`
+		MyGlue                 bool        `json:"my-glue,omitempty"`
+		Name                   string      `json:"name,omitempty"`
+		AutofillSelectors      interface{} `json:"autofill-selectors,omitempty"`
+		Username               string      `json:"username,omitempty"`
+		URL                    string      `json:"url,omitempty"`
+		Notes                  string      `json:"notes,omitempty"`
+		PasswordUpdatedAt      *time.Time  `json:"password-updated-at,omitempty"`
+		UpdatedBy              int         `json:"updated-by,omitempty"`
+		UpdatedByType          string      `json:"updated-by-type,omitempty"`
+		ResourceID             int         `json:"resource-id,omitempty"`
+		CachedResourceTypeName string      `json:"cached-resource-type-name,omitempty"`
+		CachedResourceName     string      `json:"cached-resource-name,omitempty"`
+		PasswordCategoryID     int         `json:"password-category-id,omitempty"`
+		PasswordCategoryName   string      `json:"password-category-name,omitempty"`
+		CreatedAt              *time.Time  `json:"created-at,omitempty"`
+		UpdatedAt              *time.Time  `json:"updated-at,omitempty"`
+		OtpEnabled             bool        `json:"otp-enabled,omitempty"`
+		PasswordFolderID       int         `json:"password-folder-id,omitempty"`
+		ResourceType           string      `json:"resource-type,omitempty"`
+		ParentURL              string      `json:"parent-url,omitempty"`
+		VaultID                int         `json:"vault-id,omitempty"`
+		Archived               bool        `json:"archived,omitempty"`
+		Password               string      `json:"password,omitempty"`
+	} `json:"attributes,omitempty"`
 	Relationships struct {
-	} `json:"relationships"`
+	} `json:"relationships,omitempty"`
 }
 
 type Password struct {
-	Data  struct{ PasswordData } `json:"data"`
-	Meta  struct{ Metadata }     `json:"meta"`
-	Links struct{ Links }        `json:"links"`
+	Data  struct{ PasswordData } `json:"data,omitempty"`
+	Meta  struct{ Metadata }     `json:"meta,omitempty"`
+	Links struct{ Links }        `json:"links,omitempty"`
 }
 
 type PasswordList struct {
-	Data  []struct{ PasswordData } `json:"data"`
-	Meta  struct{ Metadata }       `json:"meta"`
-	Links struct{ Links }          `json:"links"`
+	Data  []struct{ PasswordData } `json:"data,omitempty"`
+	Meta  struct{ Metadata }       `json:"meta,omitempty"`
+	Links struct{ Links }          `json:"links,omitempty"`
 }
 
 //GetPasswords returns passwords

@@ -79,7 +79,7 @@ func (itg *ITGAPI) GetPasswords(pageNumber int) (*PasswordList, error) {
 
 //GetPasswordsByID returns passwords
 func (itg *ITGAPI) GetPasswordsByID(passwordID int) (*Password, error) {
-	req := itg.NewRequest(fmt.Sprintf("/password/%d", passwordID), "GET", nil)
+	req := itg.NewRequest(fmt.Sprintf("/passwords/%d", passwordID), "GET", nil)
 	err := req.Do()
 	if err != nil {
 		return nil, fmt.Errorf("request failed for %s: %s", req.RestAction, err)

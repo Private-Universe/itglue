@@ -20,9 +20,9 @@ type FlexibleAssetData struct {
 		Name                  string `json:"name"`
 		Traits                map[string]interface {
 		} `json:"traits"`
-		Archived  bool      `json:"archived"`
-		CreatedAt time.Time `json:"created-at"`
-		UpdatedAt time.Time `json:"updated-at"`
+		Archived  bool       `json:"archived"`
+		CreatedAt *time.Time `json:"created-at,omitempty"`
+		UpdatedAt *time.Time `json:"updated-at,omitempty"`
 	} `json:"attributes"`
 	Relationships struct {
 	} `json:"relationships"`
